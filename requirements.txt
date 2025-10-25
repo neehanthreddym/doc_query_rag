@@ -5,6 +5,8 @@ pypdf
 pymupdf
 sentence-transformers
 faiss-cpu
+annoy
+hnswlib
 chromadb
 langchain-groq
 python-dotenv
