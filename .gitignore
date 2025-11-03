@@ -1,25 +1,14 @@
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
 .Python
-env/
-venv/
 .venv/
-pip-log.txt
-pip-delete-this-directory.txt
 
 # Environment variables
 .env
-.env.local
-.env.*.local
 
 # IDEs
 .vscode/
 .idea/
-*.swp
-*.swo
 
 # Data and logs
 logs/
@@ -31,4 +20,3 @@ logs/
 
 # OS
 .DS_Store
-Thumbs.db

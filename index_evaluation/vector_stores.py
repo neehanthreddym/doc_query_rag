@@ -83,7 +83,7 @@ class HNSWVectorStore(VectorStoreInterface):
     def name(self) -> str:
         return "HNSW"
     
-    def buid(self, embeddings: np.ndarray, documents: List[Dict[str, Any]]):
+    def build(self, embeddings: np.ndarray, documents: List[Dict[str, Any]]):
         """Builds HNSW index from embeddings."""
         print(f"Building {self.name} index...")
 
@@ -202,3 +202,17 @@ class FAISSVectorStore(VectorStoreInterface):
         
         # Return corresponding documents
         return [self.documents[idx] for idx in indices if idx >= 0]
+
+# Helper function to create vector store instances
+def get_vector_store(store_type: str, **kwargs) -> VectorStoreInterface:
+    """Factory function to create vector store instances."""
+    stores = {
+        'annoy': ANNOYVectorStore,
+        'hnsw': HNSWVectorStore,
+        'faiss': FAISSVectorStore,
+    }
+    
+    if store_type.lower() not in stores:
+        raise ValueError(f"Unknown store type: {store_type}. Available: {list(stores.keys())}")
+    
+    return stores[store_type.lower()](**kwargs)
