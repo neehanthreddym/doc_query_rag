@@ -66,8 +66,6 @@ Type your query about a research paper published, and get context-aware answers.
 ## 📂 Project Structure
 ```
 .
-├── index_evaluation/        # Similarity search techniques Benchmarking
-│   ├── vector_store_interface.py       # Common interface for benchmarking different ANN techniques
 ├── core/                    # Core components
 │   ├── data_loader.py       # PDF loading + chunking
 │   ├── embedding_manager.py # Embedding generation
