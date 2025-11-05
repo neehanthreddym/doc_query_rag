@@ -78,6 +78,12 @@ Type your query about a research paper published, and get context-aware answers.
 │   ├── pdf_files/           # Source documents
 │   └── vector_store/        # Persisted ChromaDB index
 │
+├── index_evaluation/              # Benchmarking
+│   ├── vector_store_interface.py  # Vector store interface (ABC / Strategy)
+│   ├── vector_stores.py           # Wrapers for Indexing algorithms (Concrete Strategies: ANNOY, HNSW, FAISS)
+│   ├── benchmark.py               # Benchmarking logic & dataclass
+│   └── evaluation.py              # Main script to run the benchmark
+│
 ├── notebooks/
 │   └── rag_pipeline.ipynb   # Experiments & benchmarks
 │
