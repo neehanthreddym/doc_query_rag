@@ -11,6 +11,7 @@ class BenchmarkMetrics:
     store_name: str
     
     build_time_seconds: float
+    memory_usage_mb: float
     queries_per_second: float
     avg_query_time_ms: float
     recall_at_10: float
@@ -160,6 +161,7 @@ def measure_memory_usage() -> float:
 def calculate_search_accuracy(vector_store,
                             embeddings: np.ndarray,
                             query_embeddings: np.ndarray,
+                            store_name: str,
                             top_k: int = 10,
                             num_samples: int = 5) -> Tuple[float, float]:
     """
@@ -186,32 +188,47 @@ def calculate_search_accuracy(vector_store,
     recall_scores_10 = []
     recall_scores_100 = []
     
-    num_queries = min(num_samples, len(query_embeddings))
-    
-    print(f"Calculating accuracy with {num_queries} sample queries...")
-    
-    for i in range(num_queries):
-        query_embedding = query_embeddings[i]
-        
-        # Retrieve results from vector store
+    for query_embedding in query_embeddings[:num_samples]:
         store_results = vector_store.query(query_embedding, top_k=top_k)
         retrieved_indices = np.array([doc['id'] for doc in store_results])
+
+        # Choose metric based on store type
+        if "ANNOY" in store_name:
+            # ANNOY: Cosine Similarity
+            query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
+            embeddings_norm = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
+            similarities = np.dot(embeddings_norm, query_norm)
+            ground_truth = np.argsort(-similarities)[:top_k]
+        elif "HNSW" in store_name:
+            # HNSW: Cosine Similarity
+            query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
+            embeddings_norm = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
+            similarities = np.dot(embeddings_norm, query_norm)
+            ground_truth = np.argsort(-similarities)[:top_k]
+        elif "FAISS" in store_name:
+            # FAISS: L2 Distance
+            distances = np.linalg.norm(embeddings - query_embedding, axis=1)
+            ground_truth = np.argsort(distances)[:top_k]
+        else:
+            # Default: Cosine
+            query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
+            embeddings_norm = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
+            similarities = np.dot(embeddings_norm, query_norm)
+            ground_truth = np.argsort(-similarities)[:top_k]
         
-        # Calculate ground truth using brute force (Euclidean distance)
-        distances = np.linalg.norm(embeddings - query_embedding, axis=1)
-        ground_truth_indices = np.argsort(distances)[:top_k]
+        # Calculate recall
+        retrieved_set = set(retrieved_indices[:10])
+        ground_truth_set = set(ground_truth[:10])
+        recall_10 = len(retrieved_set & ground_truth_set) / len(ground_truth_set)
         
-        # Calculate recall at 10 and 100
-        recall_10 = calculate_recall_at_k(retrieved_indices, ground_truth_indices, k=10)
-        recall_100 = calculate_recall_at_k(retrieved_indices, ground_truth_indices, k=100)
+        recalled_set = set(retrieved_indices[:100])
+        ground_truth_set_100 = set(ground_truth[:100])
+        recall_100 = len(recalled_set & ground_truth_set_100) / len(ground_truth_set_100)
         
         recall_scores_10.append(recall_10)
         recall_scores_100.append(recall_100)
-    
-    avg_recall_10 = np.mean(recall_scores_10)
-    avg_recall_100 = np.mean(recall_scores_100)
-    
-    return avg_recall_10, avg_recall_100
+
+    return np.mean(recall_scores_10), np.mean(recall_scores_100)
 
 # Main benchmarking function
 def benchmark_vector_store(vector_store_class,
@@ -247,7 +264,7 @@ def benchmark_vector_store(vector_store_class,
     params = {k: v for k, v in store_params.items() if k != 'name'}
 
     print(f"\n{'='*80}")
-    print(f"🧪 BENCHMARKING {store_name}")
+    print(f"BENCHMARKING {store_name}")
     print(f"{'='*80}\n")
 
     try:
@@ -292,6 +309,7 @@ def benchmark_vector_store(vector_store_class,
             vector_store,
             embeddings,
             query_embeddings,
+            store_name,
             top_k=top_k,
             num_samples=5
         )
@@ -317,3 +335,7 @@ def benchmark_vector_store(vector_store_class,
         import traceback
         traceback.print_exc()
         return None
+
+if __name__ == "__main__":
+    print("This module provides benchmarking utilities for vector stores. " 
+          "Import its functions to use them.")

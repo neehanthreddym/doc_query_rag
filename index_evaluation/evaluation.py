@@ -1,10 +1,12 @@
 import argparse
 import sys
 from typing import List
-from benchmark import BenchmarkMetrics, benchmark_vector_store
-from ..core.data_loader import load_pdf_documents, split_documents
-from ..core.embedding_manager import EmbeddingManager
-from vector_stores import ANNOYVectorStore, HNSWVectorStore, FAISSVectorStore
+from .benchmark import BenchmarkMetrics, benchmark_vector_store
+from core.data_loader import load_pdf_documents, split_documents
+from core.embedding_manager import EmbeddingManager
+# from ..core.data_loader import load_pdf_documents, split_documents
+# from ..core.embedding_manager import EmbeddingManager
+from .vector_stores import ANNOYVectorStore, HNSWVectorStore, FAISSVectorStore
 
 TEST_QUERIES = [
     "What is the core architectural innovation of the Transformer model introduced in 'Attention Is All You Need'?",
@@ -152,7 +154,7 @@ if __name__ == "__main__":
         },
         {
             'class': FAISSVectorStore,
-            'params': {'n_clusters': 100, 'pq_m': 8, 'name': 'FAISS'}
+            'params': {'name': 'FAISS (Flat)'}
         },
     ]
 
@@ -181,7 +183,7 @@ if __name__ == "__main__":
 
     for result in results:
         if result is not None:
-            result.BenchmarkMetrics.print_summary()
+            result.print_summary()
 
     print_metric_analysis(results)
 

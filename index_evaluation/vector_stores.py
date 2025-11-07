@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 import numpy as np
-from vector_store_interface import VectorStoreInterface
+from .vector_store_interface import VectorStoreInterface
 
 class ANNOYVectorStore(VectorStoreInterface):
     """Vector store implementation using ANNOY (Approximate Nearest Neighbors Oh Yeah)."""
@@ -93,7 +93,7 @@ class HNSWVectorStore(VectorStoreInterface):
         # Create index
         self.index = self.hnswlib.Index(space='cosine', dim=self.embedding_dim)
         self.index.init_index(
-            max_items=num_items,
+            max_elements=num_items,
             ef_construction=self.ef_construction,
             M=self.max_connections
         )
@@ -126,11 +126,11 @@ class HNSWVectorStore(VectorStoreInterface):
         return [self.documents[idx] for idx in indices]
 
 class FAISSVectorStore(VectorStoreInterface):
-    """Vector store implementation using FAISS (IVF + Product Quantization)."""
+    """Vector store implementation using FAISS (IVF)."""
     
-    def __init__(self, n_clusters: int = 100, pq_m: int = 8):
+    def __init__(self):
         """
-        Initialize FAISS vector store with IVF + PQ.
+        Initialize FAISS vector store with IVF .
         
         Args:
             n_clusters: Number of clusters for IVF
@@ -142,47 +142,51 @@ class FAISSVectorStore(VectorStoreInterface):
             raise ImportError("faiss library not installed. Install with: pip install faiss-cpu")
         
         self.faiss = faiss
-        self.n_clusters = n_clusters
-        self.pq_m = pq_m
+        # self.n_clusters = n_clusters
         self.index = None
         self.documents = None
         self.embedding_dim = None
     
     @property
     def name(self) -> str:
-        return "FAISS (IVF+PQ)"
+        return "FAISS (Flat)"
     
     def build(self, embeddings: np.ndarray, documents: List[Dict[str, Any]]):
-        """Builds FAISS index with IVF + PQ from embeddings."""
+        """Builds FAISS index with Flat from embeddings."""
         print(f"Building {self.name} index...")
         
-        # Normalize embeddings for cosine distance
+        # Normalize embeddings
         embeddings = embeddings.astype(np.float32)
         self.faiss.normalize_L2(embeddings)
         
         self.embedding_dim = embeddings.shape[1]
-        num_items = embeddings.shape[0]
+        # num_items = embeddings.shape[0]   
+
+        # Rule: n_clusters should be < num_items but not too large
+        # n_clusters = min(self.n_clusters, max(1, num_items // 10))
         
-        # Ensure n_clusters is reasonable
-        n_clusters = min(self.n_clusters, max(10, num_items // 10))
+        # Create IVF index
+        # quantizer = self.faiss.IndexFlatL2(self.embedding_dim)
+        # self.index = self.faiss.IndexIVFFlat(
+        #     quantizer, 
+        #     self.embedding_dim, 
+        #     n_clusters, 
+        #     self.faiss.METRIC_L2
+        # )
+
+        # Flat Index
+        self.index = self.faiss.IndexFlatL2(self.embedding_dim)
         
-        # Create IVF + PQ index
-        quantizer = self.faiss.IndexFlatL2(self.embedding_dim)
-        self.index = self.faiss.IndexIVFPQ(
-            quantizer,
-            self.embedding_dim,
-            n_clusters,
-            self.pq_m,
-            8  # bits per component
-        )
+        # print(f"  Training IVF with {num_items} vectors...")
+        # self.index.train(embeddings)
         
-        # Train and add items
-        self.index.train(embeddings)
+        # Add embeddings to the index
         self.index.add(embeddings)
-        
-        # Set number of probes for query
-        self.index.nprobe = max(1, n_clusters // 4)
-        
+
+        # Set nprobe (number of clusters to search)
+        # Higher nprobe = more accurate but slower
+        # self.index.nprobe = max(1, int(np.sqrt(n_clusters)) + 1)
+                
         self.documents = documents
         
         print(f"✅ {self.name} index built successfully")
@@ -216,3 +220,7 @@ def get_vector_store(store_type: str, **kwargs) -> VectorStoreInterface:
         raise ValueError(f"Unknown store type: {store_type}. Available: {list(stores.keys())}")
     
     return stores[store_type.lower()](**kwargs)
+
+if __name__ == "__main__":
+    print("This module provides implementations (wrappers) for vector stores. "
+          "Import its functions to use them.")
