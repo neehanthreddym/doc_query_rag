@@ -15,19 +15,16 @@ class RAGPipeline:
 
     def _create_prompt(self, query: str, context: str) -> str:
         """Creates the final prompt for the LLM."""
-        return f"""You are an expert Q&A assistant. Your task is to use the following context to answer the question.
+        return f"""You are an expert research Q&A assistant. Your task is to use the following context to answer the question.
 
         Instructions:
         1. Do not make assumptions.
         2. Elaborate your answers with details from the context.
-        3. Provide concise and accurate answers.
-        4. Cite sources when applicable.
-        5. If multiple sources provide the same information, consolidate them into a single answer.
-        6. Always refer to the context provided.
-        7. If the context does not contain enough information to answer the query, reply with: "I cannot answer this query based on the provided context."
-        8. Retrieve if any images and/or tables are mentioned in the context to support your answer.
-        9. Produce answers in markdown format for better readability.
-        10. Provide approximate or near answer if exact answer is not found in the context.
+        3. Cite sources when applicable.
+        4. If multiple sources provide the same information, consolidate them into a single answer.
+        5. If the context does not contain enough information to answer the query, reply with: "I cannot answer this query based on the provided context."
+        6. Produce answers in markdown format for better readability.
+        7. Provide exact context is not found elaborate based on your knowledge.
 
         Here is the context and the question you need to answer:
         ---

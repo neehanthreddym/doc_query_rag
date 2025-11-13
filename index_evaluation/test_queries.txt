@@ -1,0 +1,53 @@
+What is the central trade-off between convergence and generalization in over-the-air federated meta-learning, and what role do wireless channel impairments play in this trade-off?
+What is the analytical framework proposed for designing LLM-based algorithms, and how does it use computational graphs and task decomposition to analyze accuracy and efficiency?
+How does the proposed Reliability-Aware RAG (RA-RAG) framework improve upon standard RAG, and what two specific mechanisms does it use to estimate and leverage source reliability?
+What is the core concept of PoE-World, and how does it use an exponentially-weighted product of programmatic experts synthesized by LLMs to create a compositional world model?
+What is the primary limitation of atom-level tokenization in existing chemical LLMs, and how does the mCLM model address this by tokenizing molecules at the level of functional building blocks?
+What is the Dyna-Think framework, and how do Dyna-Think Imitation Learning (DIT) and Dyna-Think Dyna Training (DDT) synergize reasoning, acting, and world model simulation?
+What are the two foundation models powering Apple Intelligence, and what specific architectural innovations, such as KV-cache sharing and Parallel-Track Mixture-of-Experts (PT-MoE), do they use?
+What is "compositional multi-tasking" in the context of on-device LLMs, and what is the "Learnable Calibration" method proposed to solve it efficiently?
+How does the radiology Retrieval and Reasoning (RaR) framework improve upon traditional single-step RAG systems for radiology question answering?
+Describe the Hierarchical Navigable Small World (HNSW) algorithm. How does it incrementally build a multi-layer structure, and why does starting the search from the upper layer allow for logarithmic complexity scaling?
+What is the novel AI-driven approach proposed for detecting malicious GraphQL queries, and how does it specifically use Large Language Models (LLMs) and Sentence Transformers (SBERT/Doc2Vec)?
+What is MAHL, and how does its six-agent framework, particularly the "AI-Hardware Hierarchical Parser" and "Multi-Granularity Design Space Explorer," automate hierarchical chiplet design?
+What are the key trade-offs found between CPU-based serverless frameworks (like SPIRT and MLLess) and GPU-based training, and under what conditions do serverless architectures offer a cost advantage?
+How does OpenMLDB optimize SQL+ML queries to achieve low latency, and what percentage of the performance gains are attributed to "query plan optimization," "caching," and "parallel processing"?
+How does the proposed multi-agent "blackboard architecture" differ from a traditional "master-slave" paradigm, and why does this new design improve scalability and flexibility for information discovery in data lakes?
+What is Time Series GPT (TS-GPT), and how does it build on the classical innovations representation theory of Wiener and Kallianpur to create a foundation model for engineering time series?
+What is the "AI Knowledge Assist" system, and what three-stage pipeline does it use to extract, cluster, and recommend question-answer pairs from historical customer-agent conversations to solve the cold-start problem?
+How does the PRE-CONTROL method achieve precise attribute intensity, and what are its three key designs, including the reformulation of alignment as a "target-reaching problem"?
+What is the "Transformer" architecture, and how does it use "multi-head attention" to replace recurrent and convolutional neural networks for sequence transduction?
+According to the paper, what are "in-context learning," "few-shot," "one-shot," and "zero-shot" settings, and how does GPT-3's performance in these settings demonstrate that scaling model size improves task-agnostic learning?
+How does the Retrieval-Augmented Generation (RAG) model combine a "parametric" memory (a seq2seq model) with a "non-parametric" memory (a dense vector index), and how is the neural retriever component trained?
+How does the proposed method for billion-scale similarity search on GPUs achieve its speedup, and how is it applied to "product quantization" (PQ) to build a k-NN graph?
+What is BERT, and how does its "Masked Language Model" (MLM) pre-training objective enable it to learn deep bidirectional representations by conditioning on both left and right context?
+What is "chain-of-thought prompting," and how does this method improve the performance of large language models on arithmetic, commonsense, and symbolic reasoning tasks?
+How does the ColBERTv2 "late interaction" model use "residual compression" and "denoised supervision" to simultaneously improve retrieval quality and reduce the space footprint of multi-vector representations?
+What is DeepSeek-R1, and how does its multi-stage training process, which incorporates reinforcement learning without a preliminary Supervised Fine-Tuning (SFT) step, improve reasoning capabilities?
+According to the "Scaling Laws" paper, how does the cross-entropy loss of a language model scale as a power-law with respect to model size (N), dataset size (D), and compute (C)?
+What is the general end-to-end approach to sequence learning proposed in this paper, and how does it use one LSTM to map an input sequence to a fixed-dimensionality vector and another LSTM to decode the target sequence from that vector?
+What is the novel "co-attention" model proposed for VQA, and how does it jointly reason about "visual attention" (where to look) and "question attention" (what words to listen to)?
+What is Low-Rank Adaptation (LoRA), and how does it reduce the number of trainable parameters by freezing pre-trained model weights and injecting trainable "rank decomposition matrices" into each layer?
+What is the "Text-to-Text Transfer Transformer" (T5), and how does its unified framework convert all text-based language problems into a text-to-text format?
+What is "chain-of-thought prompting," and how does it improve the reasoning ability of large language models by providing a few exemplars that include intermediate reasoning steps?
+What is the three-step process for aligning language models with user intent using human feedback, as described in the InstructGPT paper?
+What is the "self-consistency" decoding strategy, and how does it improve on chain-of-thought prompting by sampling a diverse set of reasoning paths and then selecting the most consistent answer?
+How does Toolformer teach itself to use external tools in a self-supervised way by deciding which APIs to call, what arguments to pass, and how to incorporate the results into future token prediction?
+What are the key findings from the "Judging LLM-as-a-Judge" paper regarding the agreement level between strong LLM judges (like GPT-4) and human preferences, and what two benchmarks (MT-Bench and Chatbot Arena) were introduced to evaluate this?
+What is FlashMap, and what specific optimizations does it use to achieve high throughput for inserts and lookups on Flash-based SSDs?
+What is StrikeWatch, and what F1 score and energy consumption did the 1D-SepCNN model achieve on the iCE40UP5K FPGA?
+What is LiteVLA, and what specific quantization method and parameter-efficient fine-tuning technique does it use to enable deployment on a CPU-only Raspberry Pi 4?
+How does the EchoMark framework address the security vulnerabilities of Acoustic Environment Matching (AEM) by embedding a watermark into the Room Impulse Response (RIR)?
+What is RAPTR, and how does it use a two-stage pose decoder and "weak supervision" in the form of 3D BBoxes and 2D keypoints for radar-based 3D pose estimation?
+How does the proposed fault detection and identification (FDI) framework for multi-agent spacecraft use a "global cost functional, H" to detect both task-specific sensor faults and agent-level actuator faults?
+What is GEMMA-SQL, and what Test-Suite accuracy and Exact Set Match accuracy did the "GEMMA-SQL Instruct" variant achieve on the SPIDER benchmark?
+What are the distinct roles of the "Mapping agent," "Relation agent," and "Validator agent" in the proposed multi-agent system for mapping relational data to knowledge graphs?
+What is RAG-Stack, and what are its three pillars (RAG-IR, RAG-CM, and RAG-PE) for co-optimizing RAG quality and performance?
+How does the FinAI Data Assistant use the OpenAI Function Calling API to route user requests to a library of vetted, parameterized queries instead of relying on generative text-to-SQL?
+What is the proposed multi-agent system, and how does it utilize LLM agents and Schema.org terms to achieve over 90% accuracy in mapping relational data to knowledge graphs?
+What is GEMMA-SQL, and what Test-Suite accuracy and Exact Set Match accuracy did the "GEMMA-SQL Instruct" variant achieve on the SPIDER benchmark?
+How does the proposed fault detection and identification (FDI) framework for multi-agent spacecraft use a "global cost functional, H" to detect both task-specific sensor faults and agent-level actuator faults?
+What is RAPTR, and how does it use a two-stage pose decoder and "weak supervision" in the form of 3D BBox and 2D keypoint labels for radar-based 3D pose estimation?
+What is EchoMark, and how does it jointly optimize for perceptual RIR reconstruction and watermark detection to prevent malicious "relocation" or voice spoofing?
+What is StrikeWatch, and what compact deep learning architectures does it evaluate for real-time, on-device gait recognition on low-power FPGAs?
+What is LiteVLA, and what specific optimization techniques does it use to enable the deployment of Vision-Language-Action models on CPU-bound edge robots like a Raspberry Pi 4?

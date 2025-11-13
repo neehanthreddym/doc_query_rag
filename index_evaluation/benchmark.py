@@ -38,8 +38,8 @@ class BenchmarkMetrics:
         print(f"   (Average query time: {self.avg_query_time_ms:.4f}ms)\n")
         
         print(f"SEARCH ACCURACY (Recall@k)")
-        print(f"   Recall@10:  {self.recall_at_10:.4f} ({self.recall_at_10*100:.2f}%)")
-        print(f"   Recall@100: {self.recall_at_100:.4f} ({self.recall_at_100*100:.2f}%)\n")
+        print(f"   Recall@10:  {self.recall_at_10:.6f} ({self.recall_at_10*100:.2f}%)")
+        print(f"   Recall@100: {self.recall_at_100:.6f} ({self.recall_at_100*100:.2f}%)\n")
         
         print(f"DATA INFO")
         print(f"   Size: {self.dataset_size} vectors")
@@ -87,7 +87,7 @@ def calculate_recall_at_k(retrieved_indices: np.ndarray,
 
 def measure_query_speed(vector_store,
                        query_embeddings: np.ndarray,
-                       top_k: int = 10,
+                       top_k: int,
                        num_queries: Optional[int] = None) -> Tuple[float, float, List[List[Dict]]]:
     """
     Measure Query Speed (QPS - Queries Per Second).
@@ -162,8 +162,8 @@ def calculate_search_accuracy(vector_store,
                             embeddings: np.ndarray,
                             query_embeddings: np.ndarray,
                             store_name: str,
-                            top_k: int = 10,
-                            num_samples: int = 5) -> Tuple[float, float]:
+                            top_k: int,
+                            num_samples: int) -> Tuple[float, float]:
     """
     Calculate Search Accuracy (Recall@k).
     
@@ -239,7 +239,7 @@ def benchmark_vector_store(vector_store_class,
                           embeddings: np.ndarray,
                           documents: List[Dict[str, Any]],
                           query_embeddings: np.ndarray,
-                          top_k: int = 10,
+                          top_k: int,
                           num_queries: Optional[int] = None) -> Optional[BenchmarkMetrics]:
     """
     Complete benchmarking of a single vector store implementation.

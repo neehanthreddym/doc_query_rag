@@ -20,6 +20,6 @@ COLLECTION_NAME = "pdf_documents"
 
 # --- LLM and API KEYS ---
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-GROQ_MODEL_NAME = "llama-3.1-8b-instant"
+GROQ_MODEL_NAME = "openai/gpt-oss-20b"
 LLM_TEMPERATURE = 0.1
-LLM_MAX_TOKENS = 100000
+LLM_MAX_TOKENS = 65000

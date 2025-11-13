@@ -451,6 +451,7 @@ BEST PERFORMERS BY METRIC
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# Results
 LOADING DATA...
 --------------------------------------------------------------------------------
 Loading PDF documents from: data/pdf_files
@@ -930,6 +931,7 @@ BEST PERFORMERS BY METRIC
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# Results
 LOADING DATA...
 --------------------------------------------------------------------------------
 Loading PDF documents from: data/pdf_files
@@ -1168,3 +1170,460 @@ BEST PERFORMERS BY METRIC
 ✅ Benchmarking complete!
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+chunk_size = 1200
+chunk_overlap = 150
+Modified test queries
+
+# Results
+LOADING DATA...
+--------------------------------------------------------------------------------
+Loading PDF documents from: data/pdf_files
+Extracting the text from PDF files...
+✅ Extracted 57 documents.
+Splitting documents into chunks...
+✅ Split 57 documents into 4827 chunks.
+
+GENERATING EMBEDDINGS...
+--------------------------------------------------------------------------------
+🧠 Loading embedding model: all-MiniLM-L6-v2
+✅ Model loaded successfully. Embedding dimension: 384
+🧠 Generating embeddings for 4827 text chunks...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████| 151/151 [00:16<00:00,  8.94it/s]
+✅ Generated embeddings of shape: (4827, 384)
+
+GENERATING QUERY EMBEDDINGS...
+--------------------------------------------------------------------------------
+🧠 Generating embeddings for 17 text chunks...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 27.41it/s]
+✅ Generated embeddings of shape: (17, 384)
+
+================================================================================
+RUNNING BENCHMARKS FOR EACH METRIC...
+================================================================================
+
+================================================================================
+BENCHMARKING ANNOY
+================================================================================
+
+1. Initializing ANNOY...
+  Initialized with parameters: {'n_trees': 20, 'metric': 'euclidean'}
+
+2. Measuring BUILD TIME...
+Building ANNOY index with 20 trees...
+✅ ANNOY index built successfully
+  Build completed in 0.0958 seconds
+
+3. Measuring MEMORY USAGE...
+  Memory usage: 10.48 MB
+
+4. Measuring QUERY SPEED (QPS)...
+  Running 17 queries...
+    Completed 3/17 queries
+    Completed 6/17 queries
+    Completed 9/17 queries
+    Completed 12/17 queries
+    Completed 15/17 queries
+  Query speed: 45854.13 QPS (avg 0.0218ms per query)
+
+5. Calculating SEARCH ACCURACY (Recall@k)...
+  Recall@10: 0.0000
+  Recall@100: 0.0020
+
+
+================================================================================
+BENCHMARKING HNSW
+================================================================================
+
+1. Initializing HNSW...
+  Initialized with parameters: {'max_connections': 16, 'ef_construction': 200}
+
+2. Measuring BUILD TIME...
+Building HNSW index...
+✅ HNSW index built successfully
+  Build completed in 0.3069 seconds
+
+3. Measuring MEMORY USAGE...
+  Memory usage: 0.03 MB
+
+4. Measuring QUERY SPEED (QPS)...
+  Running 17 queries...
+    Completed 3/17 queries
+    Completed 6/17 queries
+    Completed 9/17 queries
+    Completed 12/17 queries
+    Completed 15/17 queries
+  Query speed: 2435.72 QPS (avg 0.4106ms per query)
+
+5. Calculating SEARCH ACCURACY (Recall@k)...
+  Recall@10: 1.0000
+  Recall@100: 1.0000
+
+
+================================================================================
+BENCHMARKING FAISS (Flat)
+================================================================================
+
+1. Initializing FAISS (Flat)...
+  Initialized with parameters: {}
+
+2. Measuring BUILD TIME...
+Building FAISS (Flat) index...
+✅ FAISS (Flat) index built successfully
+  Build completed in 0.0013 seconds
+
+3. Measuring MEMORY USAGE...
+  Memory usage: 0.11 MB
+
+4. Measuring QUERY SPEED (QPS)...
+  Running 17 queries...
+    Completed 3/17 queries
+    Completed 6/17 queries
+    Completed 9/17 queries
+    Completed 12/17 queries
+    Completed 15/17 queries
+  Query speed: 3842.80 QPS (avg 0.2602ms per query)
+
+5. Calculating SEARCH ACCURACY (Recall@k)...
+  Recall@10: 1.0000
+  Recall@100: 1.0000
+
+
+================================================================================
+DETAILED RESULTS FOR EACH VECTOR STORE
+================================================================================
+
+================================================================================
+ANNOY - BENCHMARK METRICS
+================================================================================
+
+BUILD TIME (seconds)
+   0.0958s
+
+MEMORY USAGE (MB)
+   10.48 MB
+
+QUERY SPEED (QPS - Queries Per Second)
+   45854.13 QPS
+   (Average query time: 0.0218ms)
+
+SEARCH ACCURACY (Recall@k)
+   Recall@10:  0.000000 (0.00%)
+   Recall@100: 0.002000 (0.20%)
+
+DATA INFO
+   Size: 4827 vectors
+   Dimension: 384D
+   Queries tested: 17
+================================================================================
+
+
+================================================================================
+HNSW - BENCHMARK METRICS
+================================================================================
+
+BUILD TIME (seconds)
+   0.3069s
+
+MEMORY USAGE (MB)
+   0.03 MB
+
+QUERY SPEED (QPS - Queries Per Second)
+   2435.72 QPS
+   (Average query time: 0.4106ms)
+
+SEARCH ACCURACY (Recall@k)
+   Recall@10:  1.000000 (100.00%)
+   Recall@100: 1.000000 (100.00%)
+
+DATA INFO
+   Size: 4827 vectors
+   Dimension: 384D
+   Queries tested: 17
+================================================================================
+
+
+================================================================================
+FAISS (FLAT) - BENCHMARK METRICS
+================================================================================
+
+BUILD TIME (seconds)
+   0.0013s
+
+MEMORY USAGE (MB)
+   0.11 MB
+
+QUERY SPEED (QPS - Queries Per Second)
+   3842.80 QPS
+   (Average query time: 0.2602ms)
+
+SEARCH ACCURACY (Recall@k)
+   Recall@10:  1.000000 (100.00%)
+   Recall@100: 1.000000 (100.00%)
+
+DATA INFO
+   Size: 4827 vectors
+   Dimension: 384D
+   Queries tested: 17
+================================================================================
+
+
+================================================================================
+BEST PERFORMERS BY METRIC
+================================================================================
+
+ FASTEST BUILD TIME
+    Winner: FAISS (Flat)
+    Time: 0.0013 seconds
+   (ANNOY is 72.12x slower)
+   (HNSW is 231.04x slower)
+
+ LOWEST MEMORY USAGE
+    Winner: HNSW
+    Memory: 0.03 MB
+   (ANNOY uses 335.50x more memory)
+   (FAISS (Flat) uses 3.50x more memory)
+
+ FASTEST QUERY SPEED (QPS)
+    Winner: ANNOY
+    Speed: 45854.13 QPS
+    (Avg time: 0.0218ms per query)
+   (HNSW is 18.83x slower)
+   (FAISS (Flat) is 11.93x slower)
+
+ BEST SEARCH ACCURACY (Recall@10)
+    Winner: HNSW
+    Recall@10: 1.0000 (100.00%)
+   (ANNOY: 0.0000, 100.00% lower)
+   (FAISS (Flat): 1.0000, 0.00% lower)
+
+================================================================================
+
+✅ Benchmarking complete!
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LOADING DATA...
+--------------------------------------------------------------------------------
+Loading PDF documents from: data/pdf_files
+Extracting the text from PDF files...
+✅ Extracted 57 documents.
+Splitting documents into chunks...
+✅ Split 57 documents into 4827 chunks.
+
+GENERATING EMBEDDINGS...
+--------------------------------------------------------------------------------
+🧠 Loading embedding model: all-MiniLM-L6-v2
+✅ Model loaded successfully. Embedding dimension: 384
+🧠 Generating embeddings for 4827 text chunks...
+Batches: 100%|██████████████████████████████████████████████████████████████████████████████| 151/151 [00:16<00:00,  8.94it/s]
+✅ Generated embeddings of shape: (4827, 384)
+
+GENERATING QUERY EMBEDDINGS...
+--------------------------------------------------------------------------------
+🧠 Generating embeddings for 53 text chunks...
+Batches: 100%|██████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 25.58it/s]
+✅ Generated embeddings of shape: (53, 384)
+
+================================================================================
+RUNNING BENCHMARKS FOR EACH METRIC...
+================================================================================
+
+================================================================================
+BENCHMARKING ANNOY
+================================================================================
+
+1. Initializing ANNOY...
+  Initialized with parameters: {'n_trees': 20, 'metric': 'euclidean'}
+
+2. Measuring BUILD TIME...
+Building ANNOY index with 20 trees...
+✅ ANNOY index built successfully
+  Build completed in 0.0923 seconds
+
+3. Measuring MEMORY USAGE...
+  Memory usage: 22.66 MB
+
+4. Measuring QUERY SPEED (QPS)...
+  Running 53 queries...
+    Completed 10/53 queries
+    Completed 20/53 queries
+    Completed 30/53 queries
+    Completed 40/53 queries
+    Completed 50/53 queries
+  Query speed: 55119.79 QPS (avg 0.0181ms per query)
+
+5. Calculating SEARCH ACCURACY (Recall@k)...
+  Recall@10: 0.0000
+  Recall@100: 0.0000
+
+
+================================================================================
+BENCHMARKING HNSW
+================================================================================
+
+1. Initializing HNSW...
+  Initialized with parameters: {'max_connections': 16, 'ef_construction': 200}
+
+2. Measuring BUILD TIME...
+Building HNSW index...
+✅ HNSW index built successfully
+  Build completed in 0.3122 seconds
+
+3. Measuring MEMORY USAGE...
+  Memory usage: 11.77 MB
+
+4. Measuring QUERY SPEED (QPS)...
+  Running 53 queries...
+    Completed 10/53 queries
+    Completed 20/53 queries
+    Completed 30/53 queries
+    Completed 40/53 queries
+    Completed 50/53 queries
+  Query speed: 2166.69 QPS (avg 0.4615ms per query)
+
+5. Calculating SEARCH ACCURACY (Recall@k)...
+  Recall@10: 1.0000
+  Recall@100: 0.9960
+
+
+================================================================================
+BENCHMARKING FAISS (Flat)
+================================================================================
+
+1. Initializing FAISS (Flat)...
+  Initialized with parameters: {}
+
+2. Measuring BUILD TIME...
+Building FAISS (Flat) index...
+✅ FAISS (Flat) index built successfully
+  Build completed in 0.0013 seconds
+
+3. Measuring MEMORY USAGE...
+  Memory usage: 0.09 MB
+
+4. Measuring QUERY SPEED (QPS)...
+  Running 53 queries...
+    Completed 10/53 queries
+    Completed 20/53 queries
+    Completed 30/53 queries
+    Completed 40/53 queries
+    Completed 50/53 queries
+  Query speed: 4855.37 QPS (avg 0.2060ms per query)
+
+5. Calculating SEARCH ACCURACY (Recall@k)...
+  Recall@10: 1.0000
+  Recall@100: 0.9980
+
+
+================================================================================
+DETAILED RESULTS FOR EACH VECTOR STORE
+================================================================================
+
+================================================================================
+ANNOY - BENCHMARK METRICS
+================================================================================
+
+BUILD TIME (seconds)
+   0.0923s
+
+MEMORY USAGE (MB)
+   22.66 MB
+
+QUERY SPEED (QPS - Queries Per Second)
+   55119.79 QPS
+   (Average query time: 0.0181ms)
+
+SEARCH ACCURACY (Recall@k)
+   Recall@10:  0.000000 (0.00%)
+   Recall@100: 0.000000 (0.00%)
+
+DATA INFO
+   Size: 4827 vectors
+   Dimension: 384D
+   Queries tested: 53
+================================================================================
+
+
+================================================================================
+HNSW - BENCHMARK METRICS
+================================================================================
+
+BUILD TIME (seconds)
+   0.3122s
+
+MEMORY USAGE (MB)
+   11.77 MB
+
+QUERY SPEED (QPS - Queries Per Second)
+   2166.69 QPS
+   (Average query time: 0.4615ms)
+
+SEARCH ACCURACY (Recall@k)
+   Recall@10:  1.000000 (100.00%)
+   Recall@100: 0.996000 (99.60%)
+
+DATA INFO
+   Size: 4827 vectors
+   Dimension: 384D
+   Queries tested: 53
+================================================================================
+
+
+================================================================================
+FAISS (FLAT) - BENCHMARK METRICS
+================================================================================
+
+BUILD TIME (seconds)
+   0.0013s
+
+MEMORY USAGE (MB)
+   0.09 MB
+
+QUERY SPEED (QPS - Queries Per Second)
+   4855.37 QPS
+   (Average query time: 0.2060ms)
+
+SEARCH ACCURACY (Recall@k)
+   Recall@10:  1.000000 (100.00%)
+   Recall@100: 0.998000 (99.80%)
+
+DATA INFO
+   Size: 4827 vectors
+   Dimension: 384D
+   Queries tested: 53
+================================================================================
+
+
+================================================================================
+BEST PERFORMERS BY METRIC
+================================================================================
+
+ FASTEST BUILD TIME
+    Winner: FAISS (Flat)
+    Time: 0.0013 seconds
+   (ANNOY is 73.03x slower)
+   (HNSW is 247.05x slower)
+
+ LOWEST MEMORY USAGE
+    Winner: FAISS (Flat)
+    Memory: 0.09 MB
+   (ANNOY uses 241.67x more memory)
+   (HNSW uses 125.50x more memory)
+
+ FASTEST QUERY SPEED (QPS)
+    Winner: ANNOY
+    Speed: 55119.79 QPS
+    (Avg time: 0.0181ms per query)
+   (HNSW is 25.44x slower)
+   (FAISS (Flat) is 11.35x slower)
+
+ BEST SEARCH ACCURACY (Recall@10)
+    Winner: HNSW
+    Recall@10: 1.0000 (100.00%)
+   (ANNOY: 0.0000, 100.00% lower)
+   (FAISS (Flat): 1.0000, 0.00% lower)
+
+================================================================================
+
+✅ Benchmarking complete!

@@ -50,7 +50,8 @@ def query_rag(query: str):
         groq_api_key=config.GROQ_API_KEY,
         model=config.GROQ_MODEL_NAME,
         temperature=config.LLM_TEMPERATURE,
-        max_tokens=config.LLM_MAX_TOKENS
+        max_tokens=config.LLM_MAX_TOKENS,
+        reasoning_effort="medium"
     )
     
     pipeline = RAGPipeline(retriever, llm)

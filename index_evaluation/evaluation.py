@@ -8,17 +8,9 @@ from core.embedding_manager import EmbeddingManager
 # from ..core.embedding_manager import EmbeddingManager
 from .vector_stores import ANNOYVectorStore, HNSWVectorStore, FAISSVectorStore
 
-TEST_QUERIES = [
-    "Core architectural innovation of the Transformer model introduced in 'Attention Is All You Need'.",
-    "Describe the process that Hierarchical NSW (HNSW) uses to build its multi-layer structure for approximate nearest neighbor search.",
-    "Why is compositional multi-tasking a significant challenge for on-device Large Language Models?",
-    "Compare the approach of RA-RAG to the conventional RAG described in 'Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.' What is the main difference in their retrieval process?",
-    "What is Multi-Agent GraphRAG, and how does it use Cypher and Labeled Property Graphs (LPGs) for its reasoning engine?",
-    "How does the MARC system use a graph database and agentic RAG to address cold-start problems in cocktail recommender systems?",
-    "What is OntoTune, and how does it use ontology-driven learning and convolutional models to improve query optimization?",
-    "Describe the data architecture of MemoriesDB. How does it combine time-series, semantic, and relational properties to store long-term agent memory?",
-    "What is the ORANGE framework, and how does it use historical translation logs and a nested Chain-of-Thought strategy to improve text-to-SQL accuracy?",
-]
+# Load the test queries from the text file
+with open("./index_evaluation/test_queries.txt") as f:
+    TEST_QUERIES = f.read().splitlines()
 
 def print_metric_analysis(results: List[BenchmarkMetrics]):
     """Analyze and print best performer for each metric."""
@@ -98,13 +90,13 @@ if __name__ == "__main__":
                         help='Directory containing PDF files')
     parser.add_argument('--model', type=str, default='all-MiniLM-L6-v2',
                        help='SentenceTransformer model name')
-    parser.add_argument('--chunk-size', type=int, default=500,
+    parser.add_argument('--chunk-size', type=int, default=1200,
                        help='Document chunk size')
-    parser.add_argument('--chunk-overlap', type=int, default=50,
+    parser.add_argument('--chunk-overlap', type=int, default=150,
                        help='Chunk overlap')
-    parser.add_argument('--num-queries', type=int, default=None,
+    parser.add_argument('--num-queries', type=int, default=len(TEST_QUERIES),
                        help='Number of queries to benchmark')
-    parser.add_argument('--top-k', type=int, default=10,
+    parser.add_argument('--top-k', type=int, default=200,
                        help='Number of results to retrieve')
     
     args = parser.parse_args()
