@@ -5,12 +5,13 @@ from .vector_store_interface import VectorStoreInterface
 class ANNOYVectorStore(VectorStoreInterface):
     """Vector store implementation using ANNOY (Approximate Nearest Neighbors Oh Yeah)."""
     
-    def __init__(self, n_trees: int = 10):
+    def __init__(self, n_trees: int = 10, metric: str = 'euclidean'):
         """
         Initialize ANNOY vector store.
         
         Args:
             n_trees: Number of trees to build (higher = more accurate but slower)
+            metric: Distance metric - 'angular', 'euclidean', 'manhattan', 'hamming', 'dot'
         """
         try:
             from annoy import AnnoyIndex
@@ -19,6 +20,7 @@ class ANNOYVectorStore(VectorStoreInterface):
         
         self.AnnoyIndex = AnnoyIndex
         self.n_trees = n_trees
+        self.metric = metric
         self.index = None
         self.documents = None
         self.embedding_dim = None
@@ -31,15 +33,20 @@ class ANNOYVectorStore(VectorStoreInterface):
         """Builds ANNOY index from embeddings."""
         print(f"Building {self.name} index with {self.n_trees} trees...")
         
+        embeddings = embeddings.astype(np.float32)
+        
+        if self.metric == 'angular':
+            embeddings = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
+        
         self.embedding_dim = embeddings.shape[1]
-        self.index = self.AnnoyIndex(self.embedding_dim, metric='angular')
+        self.index = self.AnnoyIndex(self.embedding_dim, metric=self.metric)
         
         # Add all embeddings to the index
         for idx, embedding in enumerate(embeddings):
             self.index.add_item(idx, embedding)
         
         # Build the index
-        self.index.build(self.n_trees)
+        self.index.build(self.n_trees, n_jobs=-1)
         self.documents = documents
         
         print(f"✅ {self.name} index built successfully")
@@ -49,8 +56,22 @@ class ANNOYVectorStore(VectorStoreInterface):
         if self.index is None:
             raise ValueError("Index not built. Call build() first.")
         
+        # Ensure 1D
+        if query_embedding.ndim > 1:
+            query_embedding = query_embedding.reshape(-1)
+        
+        query_embedding = query_embedding.astype(np.float32)
+
+        if self.metric == 'angular':
+            query_embedding = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
+        
         # Get nearest neighbor indices
-        indices = self.index.get_nns_by_vector(query_embedding, top_k)
+        search_k = max(top_k * 10, 500)
+        try:
+            indices = self.index.get_nns_by_vector(query_embedding, top_k, search_k=search_k)
+        except Exception as e:
+            print(f"Error querying ANNOY: {e}")
+            indices = []
         
         # Return corresponding documents
         return [self.documents[idx] for idx in indices]

@@ -189,32 +189,35 @@ def calculate_search_accuracy(vector_store,
     recall_scores_100 = []
     
     for query_embedding in query_embeddings[:num_samples]:
-        store_results = vector_store.query(query_embedding, top_k=top_k)
+        retrieve_k = max(100, top_k)
+        store_results = vector_store.query(query_embedding, top_k=retrieve_k)
         retrieved_indices = np.array([doc['id'] for doc in store_results])
 
         # Choose metric based on store type
         if "ANNOY" in store_name:
-            # ANNOY: Cosine Similarity
+            # ANNOY: Cosine Similarity with Angular Distance
             query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
             embeddings_norm = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
-            similarities = np.dot(embeddings_norm, query_norm)
-            ground_truth = np.argsort(-similarities)[:top_k]
+            cosine_similarities = np.dot(embeddings_norm, query_norm)
+            cosine_similarities = np.clip(cosine_similarities, -1.0, 1.0)
+            angular_distances = np.arccos(cosine_similarities)
+            ground_truth = np.argsort(angular_distances)[:retrieve_k]
         elif "HNSW" in store_name:
             # HNSW: Cosine Similarity
             query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
             embeddings_norm = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
             similarities = np.dot(embeddings_norm, query_norm)
-            ground_truth = np.argsort(-similarities)[:top_k]
+            ground_truth = np.argsort(-similarities)[:retrieve_k]
         elif "FAISS" in store_name:
             # FAISS: L2 Distance
             distances = np.linalg.norm(embeddings - query_embedding, axis=1)
-            ground_truth = np.argsort(distances)[:top_k]
+            ground_truth = np.argsort(distances)[:retrieve_k]
         else:
             # Default: Cosine
             query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
             embeddings_norm = embeddings / (np.linalg.norm(embeddings, axis=1, keepdims=True) + 1e-8)
             similarities = np.dot(embeddings_norm, query_norm)
-            ground_truth = np.argsort(-similarities)[:top_k]
+            ground_truth = np.argsort(-similarities)[:retrieve_k]
         
         # Calculate recall
         retrieved_set = set(retrieved_indices[:10])
@@ -335,7 +338,7 @@ def benchmark_vector_store(vector_store_class,
         import traceback
         traceback.print_exc()
         return None
-
+    
 if __name__ == "__main__":
     print("This module provides benchmarking utilities for vector stores. " 
           "Import its functions to use them.")
