@@ -41,3 +41,30 @@ The project is designed using the Strategy and Factory design patterns to be mod
     - Calls benchmark_vector_store for each configured algorithm.
     - Prints the final comparative report.
 
+## How to run benchmarking
+Clone the repo (anns_benchmarking branch):
+```bash
+git clone https://github.com/neehanthreddym/doc_query_rag.git
+cd doc_query_rag
+git checkout anns_benchmarking
+```
+
+Create virtual environment managed by uv:
+```bash
+# pip install uv <-- If uv is not installed
+uv venv
+source .venv/bin/activate # macOS / Linux
+# or
+.\.venv\Scripts\activate    # Windows
+```
+
+Install the dependencies from project.toml+uv.lock:
+```bash
+uv sync
+```
+No pip install or requirements files needed.
+
+Run evaluation script:
+```bash
+uv run python -m index_evaluation.evaluation
+```
