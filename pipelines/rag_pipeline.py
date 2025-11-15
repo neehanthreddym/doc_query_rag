@@ -24,7 +24,6 @@ class RAGPipeline:
         4. If multiple sources provide the same information, consolidate them into a single answer.
         5. If the context does not contain enough information to answer the query, reply with: "I cannot answer this query based on the provided context."
         6. Produce answers in markdown format for better readability.
-        7. Provide exact context is not found elaborate based on your knowledge.
 
         Here is the context and the question you need to answer:
         ---

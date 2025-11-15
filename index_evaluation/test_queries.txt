@@ -1,3 +1,26 @@
+What is the STAGE framework, and how does it synthesize high-fidelity execution graphs for distributed AI workloads?
+What types of inputs does the GPT-4 model accept, and on which specific professional and academic benchmarks did it demonstrate human-level performance?
+What are the key enabling technologies, potential applications, and emerging challenges identified for Generative Pre-trained Transformer models?
+What is the WebText dataset, and what zero-shot task transfer capabilities did the GPT-2 model demonstrate on tasks like CoQA?
+How did the capabilities of GPT-3.5 series models (like text-davinci-003) evolve or differ from GPT-3 series models (like davinci) on the NLU tasks evaluated?
+What are the three sizes of the Gemini model family introduced, and what was the MMLU benchmark result achieved by the Gemini Ultra model?
+What are the key advancements of Gemini 2.5 Pro in the areas of advanced reasoning, long context, and agentic capabilities?
+What is the maximum context length (in tokens) on which Gemini 1.5 Pro achieved near-perfect recall, and how does its context limit compare to that of GPT-4 Turbo?
+How did GPT-5's zero-shot chain-of-thought reasoning perform on the MedXpertQA multimodal (MedXpertQA-MM) benchmark compared to GPT-40?
+What is the core argument explaining why OpenAI's o3 model, despite its high score on the ARC-AGI benchmark, should not be considered artificial general intelligence (AGI)?
+How does the proposed hybrid adaptive sampling and weighting method improve the performance and training efficiency of physics-informed neural networks (PINNs)?
+What is the operator-theoretic algorithm proposed for continuous-time offline reinforcement learning, and how does it use the infinitesimal generator of controlled diffusion processes?
+What is the "Agentic Urban Planning AI Framework", and what are its three cognitive layers and six logic components designed for AI-assisted decision-making?
+What is the 'AgileThinker' agent, and how does it simultaneously engage reactive and planning paradigms to make timely judgments in evolving environments?
+What is ProgRAG, and how does its progressive retrieval and reasoning mechanism aim to reduce hallucinations and improve accuracy in multi-hop knowledge graph question answering?
+What are the two core components of the Intelligence Foundation Model (IFM), and how does its 'neuron output prediction' learning objective differ from traditional foundation models?
+How can Quantum Artificial Intelligence (QAI) provide transformative solutions for mission-critical (MC) systems, particularly in enhancing fault tolerance and real-time intelligence?
+What are the key methodologies, evaluation strategies, and applications for using generative models like LLMs and Diffusion Models to create synthetic data for data mining?
+What is the 'GenClus' method, and how does it generalize spectral clustering to handle multi-view graphs where each view may possess different cluster structures?
+Based on the data-driven analysis, what is the quantified relationship between an LLM's structural configurations (like layers or attention heads) and its performance on benchmarks?
+How does the proposed advanced AI-driven database system use natural language processing and LLMs to automate tasks like data modeling, schema creation, and query comprehension?
+How are databases categorized to serve conversational context, situational context, and semantic context in GenAI workflows, and what type of database is used for each?
+What is the URaG framework, and how does it unify retrieval and generation within a single MLLM by leveraging the model's inherent "coarse-to-fine" evidence localization capabilities?
 What is the central trade-off between convergence and generalization in over-the-air federated meta-learning, and what role do wireless channel impairments play in this trade-off?
 What is the analytical framework proposed for designing LLM-based algorithms, and how does it use computational graphs and task decomposition to analyze accuracy and efficiency?
 How does the proposed Reliability-Aware RAG (RA-RAG) framework improve upon standard RAG, and what two specific mechanisms does it use to estimate and leverage source reliability?
@@ -35,7 +58,6 @@ What is the "self-consistency" decoding strategy, and how does it improve on cha
 How does Toolformer teach itself to use external tools in a self-supervised way by deciding which APIs to call, what arguments to pass, and how to incorporate the results into future token prediction?
 What are the key findings from the "Judging LLM-as-a-Judge" paper regarding the agreement level between strong LLM judges (like GPT-4) and human preferences, and what two benchmarks (MT-Bench and Chatbot Arena) were introduced to evaluate this?
 What is FlashMap, and what specific optimizations does it use to achieve high throughput for inserts and lookups on Flash-based SSDs?
-What is StrikeWatch, and what F1 score and energy consumption did the 1D-SepCNN model achieve on the iCE40UP5K FPGA?
 What is LiteVLA, and what specific quantization method and parameter-efficient fine-tuning technique does it use to enable deployment on a CPU-only Raspberry Pi 4?
 How does the EchoMark framework address the security vulnerabilities of Acoustic Environment Matching (AEM) by embedding a watermark into the Room Impulse Response (RIR)?
 What is RAPTR, and how does it use a two-stage pose decoder and "weak supervision" in the form of 3D BBoxes and 2D keypoints for radar-based 3D pose estimation?

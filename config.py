@@ -9,8 +9,8 @@ PDF_DIR = os.path.join(DATA_DIR, "pdf_files")
 VECTOR_STORE_DIR = os.path.join(DATA_DIR, "vector_store")
 
 # --- DOCUMENT PROCESSING ---
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+CHUNK_SIZE = 1200
+CHUNK_OVERLAP = 150
 
 # --- EMBEDDING MODEL ---
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
