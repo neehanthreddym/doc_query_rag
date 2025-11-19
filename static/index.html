@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc Query RAG</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .answer {
+            background-color: #eef2f7;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Table Styles */
+        .answer table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .answer th,
+        .answer td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .answer th {
+            background-color: #4a90e2;
+            color: white;
+        }
+
+        .answer tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .sources {
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            padding-top: 0.5rem;
+        }
+
+        .source-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .error {
+            color: #d9534f;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Doc Query RAG</h1>
+        <div class="input-group">
+            <input type="text" id="queryInput" placeholder="Ask a question about your documents..."
+                onkeypress="handleKeyPress(event)">
+            <button onclick="submitQuery()" id="submitBtn">Ask</button>
+        </div>
+
+        <div id="loading" class="loading">Thinking...</div>
+        <div id="error" class="error"></div>
+
+        <div id="result">
+            <div class="meta">Confidence: <span id="confidence"></span></div>
+            <div class="answer" id="answer"></div>
+            <div class="sources">
+                <strong>Sources:</strong>
+                <div id="sourcesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                submitQuery();
+            }
+        }
+
+        async function submitQuery() {
+            const queryInput = document.getElementById('queryInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingDiv = document.getElementById('loading');
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const answerDiv = document.getElementById('answer');
+            const confidenceSpan = document.getElementById('confidence');
+            const sourcesList = document.getElementById('sourcesList');
+
+            const query = queryInput.value.trim();
+            if (!query) return;
+
+            // Reset UI
+            resultDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            loadingDiv.style.display = 'block';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query, top_k: 5 }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                // Update UI with results
+                answerDiv.innerHTML = marked.parse(data.answer); // Parse markdown
+                confidenceSpan.textContent = data.confidence.toFixed(4);
+
+                sourcesList.innerHTML = '';
+                data.sources.forEach(source => {
+                    const div = document.createElement('div');
+                    div.className = 'source-item';
+                    div.textContent = `- ${source.source} (Score: ${source.score.toFixed(4)})`;
+                    sourcesList.appendChild(div);
+                });
+
+                resultDiv.style.display = 'block';
+            } catch (err) {
+                errorDiv.textContent = err.message;
+            } finally {
+                loadingDiv.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
