@@ -8,6 +8,7 @@ dependencies = [
     "annoy>=1.17.3",
     "chromadb>=1.0.20",
     "faiss-cpu>=1.12.0",
+    "fastapi>=0.121.3",
     "feedparser>=6.0.12",
     "hnswlib>=0.8.0",
     "ipykernel>=6.30.1",
@@ -22,4 +23,5 @@ dependencies = [
     "sentence-transformers>=5.1.0",
     "streamlit>=1.49.1",
     "streamlit-tags>=1.2.8",
+    "uvicorn>=0.35.0",
 ]

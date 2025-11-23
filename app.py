@@ -1,8 +1,10 @@
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 from typing import List, Dict, Any, Optional
 import uvicorn
+import argparse
+import sys
 
 from core.data_loader import load_pdf_documents, split_documents
 from core.embedding_manager import EmbeddingManager
@@ -14,6 +16,44 @@ import config
 
 # Global state
 pipeline: Optional[RAGPipeline] = None
+
+def build_database():
+    """Loads, splits, and embeds documents into the vector store."""
+    print("--- 📚 Starting Database Build Process ---")
+    try:
+        documents = load_pdf_documents(config.PDF_DIR)
+        if not documents:
+            print("❌ No documents found. Exiting build process.")
+            return
+        
+        print(f"✅ Loaded {len(documents)} documents")
+        
+        chunked_docs = split_documents(
+            documents,
+            chunk_size=config.CHUNK_SIZE,
+            chunk_overlap=config.CHUNK_OVERLAP
+        )
+        print(f"✅ Split into {len(chunked_docs)} chunks")
+        
+        embedding_manager = EmbeddingManager(config.EMBEDDING_MODEL_NAME)
+        print("🧠 Generating embeddings...")
+        embeddings = embedding_manager.generate_embeddings(
+            [doc.page_content for doc in chunked_docs]
+        )
+        
+        vector_store = VectorStore(
+            collection_name=config.COLLECTION_NAME,
+            persist_directory=config.VECTOR_STORE_DIR
+        )
+        print("💾 Storing documents in vector database...")
+        vector_store.add_documents(chunked_docs, embeddings)
+        
+        print("--- ✅ Database Build Process Complete ---")
+        print(f"📊 Total chunks stored: {len(chunked_docs)}")
+        
+    except Exception as e:
+        print(f"❌ Error during build: {e}")
+        raise
 
 def initialize_pipeline():
     """Initializes the RAG pipeline components."""
@@ -68,43 +108,6 @@ class QueryResponse(BaseModel):
     confidence: float
     sources: List[Dict[str, Any]]
 
-class BuildResponse(BaseModel):
-    status: str
-    message: str
-
-def run_build_database():
-    """Loads, splits, and embeds documents into the vector store."""
-    print("--- 📚 Starting Database Build Process ---")
-    try:
-        documents = load_pdf_documents(config.PDF_DIR)
-        if not documents:
-            print("No documents found. Exiting build process.")
-            return
-
-        chunked_docs = split_documents(
-            documents,
-            chunk_size=config.CHUNK_SIZE,
-            chunk_overlap=config.CHUNK_OVERLAP
-        )
-        
-        embedding_manager = EmbeddingManager(config.EMBEDDING_MODEL_NAME)
-        embeddings = embedding_manager.generate_embeddings(
-            [doc.page_content for doc in chunked_docs]
-        )
-        
-        vector_store = VectorStore(
-            collection_name=config.COLLECTION_NAME,
-            persist_directory=config.VECTOR_STORE_DIR
-        )
-        vector_store.add_documents(chunked_docs, embeddings)
-        print("--- ✅ Database Build Process Complete ---")
-        
-        # Re-initialize pipeline to pick up new data
-        initialize_pipeline()
-        
-    except Exception as e:
-        print(f"Error during build: {e}")
-
 @app.post("/query", response_model=QueryResponse)
 async def query(request: QueryRequest):
     if not pipeline:
@@ -120,15 +123,17 @@ async def query(request: QueryRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/build", response_model=BuildResponse)
-async def build_database(background_tasks: BackgroundTasks):
-    """Triggers the database build process in the background."""
-    background_tasks.add_task(run_build_database)
-    return BuildResponse(status="accepted", message="Database build started in background")
-
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "pipeline_loaded": pipeline is not None}
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    parser = argparse.ArgumentParser(description="RAG Q&A System with FastAPI")
+    parser.add_argument("--build", action="store_true", help="Build the vector database from PDF files.")
+    args = parser.parse_args()
+    
+    if args.build:
+        build_database()
+        sys.exit(0)
+    else:
+        uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
