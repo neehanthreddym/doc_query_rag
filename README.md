@@ -45,21 +45,26 @@ uv sync
 ```
 
 ## ▶️ Usage
-**Build the databse** (this is a onetime setup):
-- Upload PDFs to the `data/pdf_files path`
-- Then run this command
+**1. Build the database** (Required First Step):
+Since the vector embeddings are stored locally in ChromaDB (not in the cloud), you must build the database first.
+- The repository comes with a set of research papers in `data/pdf_files`.
+- (Optional) Add any extra PDFs you want to query into the `data/pdf_files` directory.
+- Run the build command:
 ```bash
 python app.py --build
 ```
+> [!IMPORTANT]
+> You must run this step successfully before starting the application.
 
-**API Setup**:
+**2. API Setup**:
 - Get your API key to the gemma2-9b-it model from here [groq-api-keys](https://console.groq.com/keys).
 - Create a `.env` file in your project root path and assign your API key to `GROQ_API_KEY`.
   ```env
   GROQ_API_KEY=your_api_key_here
   ```
 
-**Start the FastAPI app in local**:
+**3. Start the FastAPI app**:
+Once the database is built and API key is set:
 ```bash
 python app.py
 # OR
