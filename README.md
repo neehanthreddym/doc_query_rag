@@ -25,7 +25,7 @@ It combines embeddings, vector search, and a large language model to return cont
 - **Embeddings** (`core/embedding_manager.py`): Generate 384-dim sentence embeddings with `all-MiniLM-L6-v2`.
 - **Vector Store** (`core/vector_store.py`): Store and search embeddings using ChromaDB (HNSW indexing).
 - **Retriever** (`core/retriever.py`): Fetch relevant context for queries.
-- **Pipeline** (`pipelines/rag_pipeline.py`): Combine retriever + LLM (Google’s `gemma2-9b-it`) for RAG responses.
+- **Pipeline** (`pipelines/rag_pipeline.py`): Combine retriever + LLM (`gpt-oss-20b`) for RAG responses.
 - **FastAPI Web Interface** (`app.py`): Simple and interactive interface for querying documents.
 - **Configurable** (`config.py`): Centralized settings for model, database, and pipeline options.
 - **Experiments** (`notebooks/rag_pipeline.ipynb`).
