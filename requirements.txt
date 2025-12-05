@@ -10,7 +10,6 @@ hnswlib
 chromadb
 langchain-groq
 python-dotenv
-streamlit
 feedparser
 fastapi
 uvicorn
