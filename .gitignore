@@ -14,7 +14,7 @@ __pycache__/
 logs/
 *.log
 /data/vector_store/
-.docx
+/report/*.docx
 
 # Jupyter Notebooks
 .ipynb_checkpoints/
