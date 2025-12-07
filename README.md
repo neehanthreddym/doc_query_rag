@@ -42,6 +42,14 @@ Clone the repo and install dependencies:
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
 uv sync
+source .venv/bin/activate
+```
+
+Alternatively, you can use standard pip:
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
 ## ▶️ Usage
