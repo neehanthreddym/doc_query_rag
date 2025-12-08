@@ -65,7 +65,7 @@ python app.py --build
 > You must run this step successfully before starting the application.
 
 **2. API Setup**:
-- Get your API key to the gemma2-9b-it model from here [groq-api-keys](https://console.groq.com/keys).
+- Get your API key to the gpt-oss-20b model from here [groq-api-keys](https://console.groq.com/keys).
 - Create a `.env` file in your project root path and assign your API key to `GROQ_API_KEY`.
   ```env
   GROQ_API_KEY=your_api_key_here
