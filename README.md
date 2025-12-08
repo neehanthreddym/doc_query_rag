@@ -39,8 +39,8 @@ pip install uv
 
 Clone the repo and install dependencies:
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+git clone https://github.com/neehanthreddym/doc_query_rag.git
+cd doc_query_rag
 uv sync
 source .venv/bin/activate
 ```
