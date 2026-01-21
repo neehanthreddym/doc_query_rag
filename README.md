@@ -83,6 +83,24 @@ Open your browser at `http://localhost:8000` to access the web interface.
 
 Type your query about a research paper published, and get context-aware answers.
 
+## 🐳 Docker Deployment
+
+### Local Testing
+
+```bash
+# Build Docker image
+docker build -t docquery-rag .
+
+# Run container
+docker run -p 8000:8000 -e GROQ_API_KEY=your_api_key docquery-rag
+
+# Access at http://localhost:8000
+```
+
+### AWS Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step AWS setup instructions.
+
 ### 🧪 Test Queries
 To test the system's capabilities, you can use the example queries provided in `index_evaluation/test_queries.txt`. These queries are specifically designed to test the retrieval and generation capabilities of the system against the provided research papers.
 
@@ -118,16 +136,33 @@ You can copy any query from the file and paste it into the web interface to see 
 ├── pipelines/
 │   └── rag_pipeline.py      # Full RAG pipeline logic
 │
-├── config.py                # Global configs
-├── app.py                   # FastAPI entry point
-├── pyproject.toml           # uv dependencies
-├── requirements.txt         # pip fallback
-├── uv.lock                  # uv lock file
-├── .gitignore
+├── .github/workflows/
+│   └── main.yaml           # CI/CD pipeline
+├── config.py               # Global configs
+├── app.py                  # FastAPI entry point
+├── Dockerfile              # Docker container
+├── setup.py                # Package setup
+├── .dockerignore
+├── .env.example            # Environment template
+├── pyproject.toml          # uv dependencies
+├── requirements.txt        # pip fallback
+├── DEPLOYMENT.md           # AWS deployment guide
 └── README.md
 ```
 
-## Reference
+## 🚀 AWS CI/CD Pipeline Demo
+
+This project demonstrates an end-to-end CI/CD pipeline on AWS:
+
+1. **Docker Build** - Containerize the application
+2. **GitHub Workflow** - Automated deployment
+3. **IAM User in AWS** - AWS credentials setup
+4. **ECR** - Container registry
+5. **EC2** - Self-hosted runner
+
+**📖 See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions**
+
+## 📊 Reference
 - Mengzhao Wang, Xiaoliang Xu, Qiang Yue, Yuxiang Wang. A Comprehensive Survey and Experimental Comparison of Graph-Based Approximate Nearest Neighbor Search. PVLDB, 1 (11): 1964-1978, 2021. doi:10.14778/3476249.3476255
 - Ilias Azizi, Karima Echihabi, and Themis Palpanas. 2025. Graph-Based Vector Search: An Experimental Evaluation of the State-of-the-Art. Proc. ACM Manag. Data 3, 1 (SIGMOD), Article 43 (February 2025), 31 pages. https://doi.org/10.1145/3709693
 - https://www.youtube.com/watch?v=fZM3oX4xEyg&list=PLZoTAELRMXVM8Pf4U67L4UuDRgV4TNX9D

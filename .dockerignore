@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Data files (will be mounted or downloaded)
+data/vector_store/*
+!data/vector_store/.gitkeep
+
+# Keep sample PDFs for testing but exclude large datasets
+# data/pdf_files/*
+
+# Benchmarking (NOT needed for deployment)
+index_evaluation/
+
+# Jupyter Notebooks (NOT needed for deployment)
+notebooks/
+*.ipynb
+.ipynb_checkpoints/
+
+# Reports and outputs (NOT needed for deployment)
+report/
+outputs.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment files (secrets)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# UV lock file (using requirements.txt for Docker)
+uv.lock
+
+# Documentation (NOT needed in container)
+README.md
+LICENSE
+DEPLOYMENT.md
+VECTOR_STORE_PERSISTENCE.md
+*.md
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Assets (if not needed for runtime)
+assets/
+

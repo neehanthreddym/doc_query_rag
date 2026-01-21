@@ -1,0 +1,30 @@
+# Full Development Dependencies (includes benchmarking tools)
+
+# Core Application
+fastapi
+uvicorn
+python-dotenv
+
+# RAG Pipeline
+langchain
+langchain-core
+langchain-community
+langchain-groq
+
+# Vector Store & Embeddings
+chromadb
+sentence-transformers
+
+# PDF Processing
+pypdf
+pymupdf
+
+# ========================================
+# BENCHMARKING DEPENDENCIES (NOT needed for deployment)
+# ========================================
+faiss-cpu
+annoy
+hnswlib
+
+# Other
+feedparser

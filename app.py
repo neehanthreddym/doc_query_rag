@@ -93,11 +93,11 @@ from fastapi.responses import FileResponse
 
 app = FastAPI(title="Doc Query RAG API", lifespan=lifespan)
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/templates", StaticFiles(directory="templates"), name="templates")
 
 @app.get("/")
 async def read_index():
-    return FileResponse('static/index.html')
+    return FileResponse('templates/index.html')
 
 class QueryRequest(BaseModel):
     query: str
@@ -130,10 +130,18 @@ async def health_check():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RAG Q&A System with FastAPI")
     parser.add_argument("--build", action="store_true", help="Build the vector database from PDF files.")
+    parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind to (default: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=8000, help="Port to bind to (default: 8000)")
+    parser.add_argument("--reload", action="store_true", help="Enable auto-reload (development only)")
     args = parser.parse_args()
     
     if args.build:
         build_database()
         sys.exit(0)
     else:
-        uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+        uvicorn.run(
+            "app:app", 
+            host=args.host, 
+            port=args.port, 
+            reload=args.reload
+        )
