@@ -1,5 +1,5 @@
 # Workflow name
-name: CI/CD Pipeline
+name: DocQuery CI/CD Pipeline
 
 # Event Trigger
 on:
