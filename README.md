@@ -101,6 +101,8 @@ docker run -p 8000:8000 -e GROQ_API_KEY=your_api_key docquery-rag
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step AWS setup instructions.
 
+> **📝 Note on Vector Database**: The ChromaDB vector store is not included in the Docker image. On AWS EC2, you'll build it once using volumes, and it persists across container restarts. See [DEPLOYMENT.md](DEPLOYMENT.md) for details.
+
 ### 🧪 Test Queries
 To test the system's capabilities, you can use the example queries provided in `index_evaluation/test_queries.txt`. These queries are specifically designed to test the retrieval and generation capabilities of the system against the provided research papers.
 
