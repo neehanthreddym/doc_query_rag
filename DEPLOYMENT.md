@@ -162,7 +162,6 @@ Once everything is set up:
    - Build Docker image
    - Push to AWS ECR
    - Deploy to EC2 self-hosted runner
-   - **Build vector database** (first time only, then reuses existing)
    - Start the application
 
 3. **Access your application**:
@@ -170,7 +169,7 @@ Once everything is set up:
    http://YOUR_EC2_PUBLIC_IP:8000
    ```
 
-> **Note**: The first deployment will take longer (~5-10 minutes) because it builds the vector database from PDF files. Subsequent deployments will be faster as the database is persisted.
+> **Note**: You must build the vector database manually using the commands in the "Setup Vector Database" section above. The GitHub Actions workflow only deploys and runs the application container.
 
 ---
 

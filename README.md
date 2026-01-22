@@ -49,7 +49,7 @@ Alternatively, you can use standard pip:
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ## ▶️ Usage
@@ -138,6 +138,9 @@ You can copy any query from the file and paste it into the web interface to see 
 ├── pipelines/
 │   └── rag_pipeline.py      # Full RAG pipeline logic
 │
+├── templates/
+│   └── index.html          # Web interface template
+│
 ├── .github/workflows/
 │   └── main.yaml           # CI/CD pipeline
 ├── config.py               # Global configs
@@ -147,7 +150,8 @@ You can copy any query from the file and paste it into the web interface to see 
 ├── .dockerignore
 ├── .env.example            # Environment template
 ├── pyproject.toml          # uv dependencies
-├── requirements.txt        # pip fallback
+├── requirements-deploy.txt # Deployment dependencies
+├── requirements-dev.txt    # Development dependencies
 ├── DEPLOYMENT.md           # AWS deployment guide
 └── README.md
 ```
