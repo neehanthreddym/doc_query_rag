@@ -1,6 +1,6 @@
 # Docker & AWS Deployment Guide
 
-A simple deployment guide for the DocQuery RAG application using Docker and AWS.
+A simple deployment guide for this application using Docker and AWS.
 
 ---
 
